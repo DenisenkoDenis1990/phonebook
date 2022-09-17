@@ -1,12 +1,14 @@
 import { Component } from 'react';
 import AddContactSection from './AddContactSection/AddContactSection';
 import ContactsList from './ContactsList/ContactsList';
+import Filter from './Filter/Filter';
 const shortid = require('shortid');
 class App extends Component {
   state = {
     contacts: [],
     name: '',
     number: '',
+    filter: '',
   };
 
   isEmpty = true;
@@ -29,13 +31,25 @@ class App extends Component {
       return {
         name: '',
         number: '',
-        contacts: prevState.contacts.concat(contact),
+        filter: '',
+        contacts: [...prevState.contacts, contact],
       };
     });
     this.isEmpty = false;
   };
 
+  onFilterInputHandler = event => {
+    this.setState({
+      filter: event.currentTarget.value,
+    });
+  };
+
   render() {
+    const normalized = this.state.filter.toLowerCase();
+    const filteredContacts = this.state.contacts.filter(contact => {
+      return contact.name.toLowerCase().includes(normalized);
+    });
+
     return (
       <>
         <AddContactSection
@@ -44,8 +58,14 @@ class App extends Component {
           onSubmitHandler={this.onSubmitHandler}
           onInputHandler={this.onInputHandler}
         />
-        {!this.isEmpty && <h2>Contacts</h2>}
-        <ContactsList contacts={this.state.contacts}></ContactsList>
+
+        <h2>Contacts</h2>
+        <Filter
+          filter={this.state.filter}
+          onFilterInput={this.onFilterInputHandler}
+        />
+
+        <ContactsList contacts={filteredContacts}></ContactsList>
       </>
     );
   }
