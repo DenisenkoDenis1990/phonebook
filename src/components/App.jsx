@@ -2,7 +2,6 @@ import { Component } from 'react';
 import AddContactSection from './AddContactSection/AddContactSection';
 import ContactsList from './ContactsList/ContactsList';
 import Filter from './Filter/Filter';
-const shortid = require('shortid');
 class App extends Component {
   state = {
     contacts: [],
