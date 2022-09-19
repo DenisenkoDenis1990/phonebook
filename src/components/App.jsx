@@ -6,41 +6,20 @@ const shortid = require('shortid');
 class App extends Component {
   state = {
     contacts: [],
-    name: '',
-    number: '',
     filter: '',
-  };
-
-  isEmpty = true;
-
-  onInputHandler = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({
-      [name]: value,
-    });
-  };
-  onSubmitHandler = event => {
-    event.preventDefault();
-    const contact = {
-      name: this.state.name,
-      number: this.state.number,
-      id: shortid(),
-    };
-
-    this.setState(prevState => {
-      return {
-        name: '',
-        number: '',
-        filter: '',
-        contacts: [...prevState.contacts, contact],
-      };
-    });
-    this.isEmpty = false;
   };
 
   onFilterInputHandler = event => {
     this.setState({
       filter: event.currentTarget.value,
+    });
+  };
+
+  formSubmitHandler = data => {
+    this.setState(prevState => {
+      return {
+        contacts: [...prevState.contacts, data],
+      };
     });
   };
 
@@ -52,12 +31,7 @@ class App extends Component {
 
     return (
       <>
-        <AddContactSection
-          value={this.state.name}
-          phone={this.state.number}
-          onSubmitHandler={this.onSubmitHandler}
-          onInputHandler={this.onInputHandler}
-        />
+        <AddContactSection onSubmit={this.formSubmitHandler} />
 
         <h2>Contacts</h2>
         <Filter
