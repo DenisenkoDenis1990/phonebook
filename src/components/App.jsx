@@ -2,6 +2,7 @@ import { Component } from 'react';
 import AddContactSection from './AddContactSection/AddContactSection';
 import ContactsList from './ContactsList/ContactsList';
 import Filter from './Filter/Filter';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 class App extends Component {
   state = {
     contacts: [],
@@ -16,8 +17,34 @@ class App extends Component {
 
   formSubmitHandler = data => {
     this.setState(prevState => {
+      for (const conatct of prevState.contacts) {
+        if (data.name === conatct.name) {
+          Notify.failure(`${data.name} is already exist`);
+          return {
+            contacts: [...prevState.contacts],
+          };
+        }
+      }
       return {
         contacts: [...prevState.contacts, data],
+      };
+      // if (!prevState.contacts.includes(data.name)) {
+      //   console.log(prevState.contacts);
+      //   return {
+      //     contacts: [...prevState.contacts, data],
+      //   };
+      // } else {
+      //   alert(`${data.name} is already exist.`);
+      // }
+    });
+  };
+
+  deleteContact = id => {
+    this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(contact => {
+          return contact.id !== id;
+        }),
       };
     });
   };
@@ -38,7 +65,10 @@ class App extends Component {
           onFilterInput={this.onFilterInputHandler}
         />
 
-        <ContactsList contacts={filteredContacts}></ContactsList>
+        <ContactsList
+          contacts={filteredContacts}
+          onDeleteClick={this.deleteContact}
+        ></ContactsList>
       </>
     );
   }

@@ -25,7 +25,6 @@ class AddContactSection extends Component {
     };
 
     this.props.onSubmit(contact);
-    //console.log(contact);
     this.setState({
       name: '',
       number: '',

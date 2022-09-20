@@ -1,10 +1,13 @@
-const ContactsList = ({ contacts }) => {
+const ContactsList = ({ contacts, onDeleteClick }) => {
   return (
     <ul>
-      {contacts.map(contact => {
+      {contacts.map(({ id, name, number }) => {
         return (
-          <li key={contact.id}>
-            {contact.name}: {contact.number}
+          <li key={id}>
+            <span>
+              {name}: {number}
+            </span>
+            <button onClick={() => onDeleteClick(id)}>Delete</button>
           </li>
         );
       })}
