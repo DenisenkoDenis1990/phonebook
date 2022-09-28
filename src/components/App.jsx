@@ -28,14 +28,6 @@ class App extends Component {
       return {
         contacts: [...prevState.contacts, data],
       };
-      // if (!prevState.contacts.includes(data.name)) {
-      //   console.log(prevState.contacts);
-      //   return {
-      //     contacts: [...prevState.contacts, data],
-      //   };
-      // } else {
-      //   alert(`${data.name} is already exist.`);
-      // }
     });
   };
 
@@ -48,6 +40,20 @@ class App extends Component {
       };
     });
   };
+
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevState, prevProps) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   render() {
     const normalized = this.state.filter.toLowerCase();
