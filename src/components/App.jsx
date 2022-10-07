@@ -1,83 +1,72 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import AddContactSection from './AddContactSection/AddContactSection';
 import ContactsList from './ContactsList/ContactsList';
 import Filter from './Filter/Filter';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const App = () => {
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
+  const [filter, setFilter] = useState('');
+
+  const onFilterInputHandler = event => {
+    setFilter(event.currentTarget.value);
   };
 
-  onFilterInputHandler = event => {
-    this.setState({
-      filter: event.currentTarget.value,
-    });
-  };
-
-  formSubmitHandler = data => {
-    this.setState(prevState => {
-      for (const conatct of prevState.contacts) {
-        if (data.name === conatct.name) {
-          Notify.failure(`${data.name} is already exist`);
-          return {
-            contacts: [...prevState.contacts],
-          };
-        }
+  const formSubmitHandler = data => {
+    for (const contact of contacts) {
+      if (data.name === contact.name) {
+        toast.error(`${data.name} is already exist`);
+        setContacts(prevState => [...prevState]);
+        return;
       }
-      return {
-        contacts: [...prevState.contacts, data],
-      };
+    }
+    setContacts(prevState => [...prevState, data]);
+  };
+
+  const deleteContact = id => {
+    setContacts(prevState => {
+      const filteredState = prevState.filter(contact => {
+        return contact.id !== id;
+      });
+      return filteredState;
     });
   };
 
-  deleteContact = id => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts.filter(contact => {
-          return contact.id !== id;
-        }),
-      };
-    });
-  };
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  const normalized = filter.toLowerCase();
+  const filteredContacts = contacts.filter(contact => {
+    return contact.name.toLowerCase().includes(normalized);
+  });
 
-  componentDidUpdate(prevState, prevProps) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+  return (
+    <>
+      <AddContactSection onSubmit={formSubmitHandler} />
 
-  render() {
-    const normalized = this.state.filter.toLowerCase();
-    const filteredContacts = this.state.contacts.filter(contact => {
-      return contact.name.toLowerCase().includes(normalized);
-    });
+      <h2>Contacts</h2>
+      <Filter filter={filter} onFilterInput={onFilterInputHandler} />
 
-    return (
-      <>
-        <AddContactSection onSubmit={this.formSubmitHandler} />
-
-        <h2>Contacts</h2>
-        <Filter
-          filter={this.state.filter}
-          onFilterInput={this.onFilterInputHandler}
-        />
-
-        <ContactsList
-          contacts={filteredContacts}
-          onDeleteClick={this.deleteContact}
-        ></ContactsList>
-      </>
-    );
-  }
-}
+      <ContactsList
+        contacts={filteredContacts}
+        onDeleteClick={deleteContact}
+      ></ContactsList>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
+  );
+};
 
 export default App;

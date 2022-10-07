@@ -1,66 +1,94 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 const shortid = require('shortid');
 
-class AddContactSection extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
-  nameInputId = shortid();
-  phoneInputId = shortid();
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required()
+    .trim()
+    .max(50, 'Name is too long')
+    .min(2, 'Name is too short'),
+  number: yup.string().required().trim().max(13, 'Enter valid number').min(13),
+});
 
-  onInputHandler = event => {
+const AddContactSection = ({ onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const nameInputId = shortid();
+  const phoneInputId = shortid();
+
+  const onInputHandler = event => {
     const { name, value } = event.currentTarget;
-    this.setState({
-      [name]: value,
-    });
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+
+      default:
+        return;
+    }
   };
 
-  onSubmitHandler = event => {
-    event.preventDefault();
+  const handleSubmit = ({ name, number }, actions) => {
+    if (name === '' || number === '') {
+      toast.error(`Name or Number is empty.`);
+      return;
+    }
     const contact = {
-      name: this.state.name,
-      number: this.state.number,
+      name,
+      number,
       id: shortid(),
     };
-
-    this.props.onSubmit(contact);
-    this.setState({
-      name: '',
-      number: '',
-    });
+    onSubmit(contact);
+    setNumber('');
+    setName('');
   };
 
-  render() {
-    //const { value, phone, onSubmitHandler, onInputHandler } = this.props;
-    return (
-      <div>
-        <h1>Phonebook</h1>
-        <form onSubmit={this.onSubmitHandler}>
-          <label htmlFor={this.nameInputId}>
+  return (
+    <div>
+      <h1>Phonebook</h1>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={{ name: '', number: '' }}
+        validationSchema={schema}
+      >
+        <Form autoComplete="off">
+          <label htmlFor={nameInputId}>
             Name
-            <input
+            <Field
               type="text"
               name="name"
-              value={this.state.name}
-              id={this.nameInputId}
-              onInput={this.onInputHandler}
-            ></input>
+              value={name}
+              id={nameInputId}
+              onInput={onInputHandler}
+              placeholder="Enter contact name..."
+            ></Field>
+            <ErrorMessage name="name" component="div" />
           </label>
-          <label htmlFor={this.phoneInputId}>
+          <label htmlFor={phoneInputId}>
             Number
-            <input
+            <Field
               type="tel"
               name="number"
-              value={this.state.number}
-              id={this.phoneInputId}
-              onInput={this.onInputHandler}
-            ></input>
+              value={number}
+              onInput={onInputHandler}
+              pattern="[+]{1}[3][8][0-9]{3}[0-9]{3}[0-9]{4}"
+              placeholder="+380XXXXXXXXX"
+            ></Field>
+            <ErrorMessage name="number" component="div" />
           </label>
           <button type="submit">Add Contact</button>
-        </form>
-      </div>
-    );
-  }
-}
+        </Form>
+      </Formik>
+    </div>
+  );
+};
 export default AddContactSection;
