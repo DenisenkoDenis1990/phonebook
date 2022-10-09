@@ -1,0 +1,98 @@
+.formWrapper {
+  position: relative;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #121d2b;
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+.modalCloseButtonIcon {
+  width: 32px;
+  height: 32px;
+  fill: #b554d7;
+}
+
+.formTitle {
+  color: #b554d7;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.33;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+.formInput {
+  display: block;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+  width: 432px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ffffff;
+  outline-width: 0;
+}
+.formInput::placeholder {
+  color: #dfdfdf;
+}
+
+.formInput:hover,
+.formInput:focus {
+  border: 2px solid #b554d7;
+  transition: border 150ms linear;
+}
+
+.formLabel {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 8px;
+}
+
+.formButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 24px 12px 16px;
+  gap: 8px;
+  background: #121d2b;
+  color: #b554d7;
+  border-radius: 8px;
+  border: 2px solid #b554d7;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.formButton:hover,
+.formButton:focus {
+  color: #121d2b;
+  background: #b554d7;
+  transition: color 150ms linear, background 150ms linear;
+}
+
+.formButton:hover .addContactButtonIcon,
+.formButton:focus .addContactButtonIcon {
+  fill: #121d2b;
+  transition: fill 150ms linear;
+}
+
+.addContactButtonIcon {
+  width: 24px;
+  height: 24px;
+  fill: #b554d7;
+}

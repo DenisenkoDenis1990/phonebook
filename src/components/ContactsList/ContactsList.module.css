@@ -1,0 +1,71 @@
+.reactIcons {
+  width: 42px;
+  height: 42px;
+  fill: rgba(255, 255, 255, 0.1);
+  margin-right: 8px;
+}
+
+.contactList {
+  list-style: none;
+  margin: 0;
+  margin-bottom: 40px;
+  padding: 0;
+}
+
+.contactListItem {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 19px;
+  scale: 1;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.contactListItem:hover {
+  transform: scale(1.03);
+  transition: transform 150ms linear;
+}
+
+.contactName {
+  text-align: left;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ffffff;
+  margin: 0;
+}
+
+.contactNumber {
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+.contactWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 2;
+}
+
+.deleteButtonIcon {
+  width: 42px;
+  height: 42px;
+  fill: rgba(255, 255, 255, 0.1);
+}
+
+.deleteButton {
+  background-color: transparent;
+  border: 0;
+}
+
+.deleteButton:hover .deleteButtonIcon,
+.deleteButton:focus .deleteButtonIcon {
+  fill: #b554d7;
+  cursor: pointer;
+  transition: fill 150ms linear;
+}

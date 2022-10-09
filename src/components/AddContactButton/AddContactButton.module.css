@@ -1,0 +1,32 @@
+.addContactButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 18px;
+  padding-left: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #b554d7;
+}
+
+.addContactButton:hover,
+.addContactButton:focus {
+  border-color: #b554d7;
+  cursor: pointer;
+  transition: border-color 150ms linear;
+}
+
+.addContactButtonIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  fill: #b554d7;
+  stroke: #b554d7;
+}

@@ -1,0 +1,20 @@
+.filterInput {
+  display: block;
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  padding: 10px 12px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: white;
+  width: 770px;
+  outline-width: 0;
+}
+.filterInput:hover,
+.filterInput:focus {
+  border: 2px solid #b554d7;
+  transition: border 150ms linear;
+}

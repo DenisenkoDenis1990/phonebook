@@ -4,11 +4,14 @@ import ContactsList from './ContactsList/ContactsList';
 import Filter from './Filter/Filter';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddContactButton from './AddContactButton/AddContactButton';
+import Modal from './Modal/Modal';
 const App = () => {
   const [contacts, setContacts] = useState(
     JSON.parse(localStorage.getItem('contacts')) ?? []
   );
   const [filter, setFilter] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onFilterInputHandler = event => {
     setFilter(event.currentTarget.value);
@@ -23,6 +26,7 @@ const App = () => {
       }
     }
     setContacts(prevState => [...prevState, data]);
+    setIsModalOpen(false);
   };
 
   const deleteContact = id => {
@@ -34,9 +38,24 @@ const App = () => {
     });
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', e => {
+      if (e.code === 'Escape') {
+        setIsModalOpen(false);
+      }
+    });
+  }, []);
 
   const normalized = filter.toLowerCase();
   const filteredContacts = contacts.filter(contact => {
@@ -44,16 +63,23 @@ const App = () => {
   });
 
   return (
-    <>
-      <AddContactSection onSubmit={formSubmitHandler} />
-
-      <h2>Contacts</h2>
+    <div className="container">
+      <h1 className="Title">Search contact</h1>
       <Filter filter={filter} onFilterInput={onFilterInputHandler} />
-
       <ContactsList
         contacts={filteredContacts}
         onDeleteClick={deleteContact}
       ></ContactsList>
+      <AddContactButton openModal={openModal} />
+
+      {isModalOpen && (
+        <Modal>
+          <AddContactSection
+            onSubmit={formSubmitHandler}
+            onCloseModal={closeModal}
+          />
+        </Modal>
+      )}
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -65,7 +91,7 @@ const App = () => {
         draggable
         pauseOnHover
       />
-    </>
+    </div>
   );
 };
 

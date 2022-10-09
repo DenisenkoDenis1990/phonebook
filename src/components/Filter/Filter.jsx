@@ -1,14 +1,13 @@
+import css from '../Filter/Filter.module.css';
 const Filter = ({ filter, onFilterInput }) => {
   return (
-    <>
-      <p>Find contacts by name</p>
-      <input
-        name="filter"
-        type="text"
-        filter={filter}
-        onChange={onFilterInput}
-      ></input>
-    </>
+    <input
+      className={css.filterInput}
+      name="filter"
+      type="text"
+      filter={filter}
+      onChange={onFilterInput}
+    ></input>
   );
 };
 
