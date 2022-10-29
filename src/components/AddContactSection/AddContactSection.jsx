@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import css from '../AddContactSection/AddContactSection.module.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,6 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { IoMdAdd } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/actions';
 const shortid = require('shortid');
 
 const schema = yup.object().shape({
@@ -23,41 +24,18 @@ const schema = yup.object().shape({
     .min(13, 'Number is too short'),
 });
 
-const AddContactSection = ({ onSubmit, onCloseModal }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
+const AddContactSection = ({ onCloseModal }) => {
   const nameInputId = shortid();
   const phoneInputId = shortid();
+  const dispatch = useDispatch();
 
-  const onInputHandler = event => {
-    const { name, value } = event.currentTarget;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-
-      default:
-        return;
-    }
-  };
-
-  const handleSubmit = ({ name, number }, actions) => {
+  const handleSubmit = ({ name, number }) => {
     if (name === '' || number === '') {
       toast.error(`Name or Number is empty.`);
       return;
     }
-    const contact = {
-      name,
-      number,
-      id: shortid(),
-    };
-    onSubmit(contact);
-    setNumber('');
-    setName('');
+    dispatch(addContact({ name, number, id: shortid() }));
+    onCloseModal();
   };
 
   return (
@@ -78,9 +56,7 @@ const AddContactSection = ({ onSubmit, onCloseModal }) => {
             <Field
               type="text"
               name="name"
-              value={name}
               id={nameInputId}
-              onInput={onInputHandler}
               placeholder="Enter contact name..."
               className={css.formInput}
             ></Field>
@@ -91,8 +67,6 @@ const AddContactSection = ({ onSubmit, onCloseModal }) => {
             <Field
               type="tel"
               name="number"
-              value={number}
-              onInput={onInputHandler}
               pattern="[+]{1}[3][8][0-9]{3}[0-9]{3}[0-9]{4}"
               placeholder="+380XXXXXXXXX"
               className={css.formInput}

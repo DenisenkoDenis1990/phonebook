@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://DenisenkoDenis1990.github.io/phonebook/",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -17,6 +18,7 @@
     "react-hook-form": "^7.36.1",
     "react-icons": "^4.4.0",
     "react-phone-number-input": "^3.2.11",
+    "react-redux": "^8.0.4",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "shortid": "^2.2.16",
