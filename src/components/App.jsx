@@ -5,10 +5,8 @@ import Filter from './Filter/Filter';
 import 'react-toastify/dist/ReactToastify.css';
 import AddContactButton from './AddContactButton/AddContactButton';
 import Modal from './Modal/Modal';
-import { useSelector } from 'react-redux';
 
 const App = () => {
-  const items = useSelector(state => state.contacts.items);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,10 +16,6 @@ const App = () => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(items));
-  }, [items]);
 
   useEffect(() => {
     window.addEventListener('keydown', e => {

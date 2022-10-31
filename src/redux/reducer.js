@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { deleteContact, addContact, filterContacts } from './actions';
 
 const initialState = {
-  items: JSON.parse(localStorage.getItem('contacts')) ?? [],
+  items: [],
   filter: '',
 };
 

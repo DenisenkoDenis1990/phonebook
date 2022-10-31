@@ -2,16 +2,11 @@ import { IoMdContact } from 'react-icons/io';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { deleteContact } from 'redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import css from '../ContactsList/ContactsList.module.css';
-const ContactsList = ({ onDeleteClick }) => {
+const ContactsList = () => {
   const items = useSelector(state => state.contacts.items);
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(items));
-  }, [items]);
 
   const normalized = filter.toLowerCase();
   const filteredContacts = items.filter(item => {
