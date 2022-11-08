@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { IoMdAdd } from 'react-icons/io';
 import { IoMdClose } from 'react-icons/io';
 import * as yup from 'yup';
+import { useGetContactsQuery } from 'redux/contactsApi';
 import { useAddContactMutation } from 'redux/contactsApi';
 const shortid = require('shortid');
 
@@ -26,16 +27,45 @@ const schema = yup.object().shape({
 const AddContactSection = ({ onCloseModal }) => {
   const nameInputId = shortid();
   const phoneInputId = shortid();
+  const { data } = useGetContactsQuery();
 
-  const [addContact] = useAddContactMutation();
+  const [addContact, result] = useAddContactMutation();
+  console.log(result);
 
   const handleSubmit = async ({ name, phone }) => {
-    if (name === '' || phone === '') {
-      toast.error(`Name or Number is empty.`);
+    let isInclude = false;
+    data.forEach(contact => {
+      if (contact.name === name || contact.phone === phone) {
+        toast.error('This Name or Phone is already exist', {
+          position: 'top-center',
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        isInclude = true;
+        return;
+      }
+    });
+
+    if (isInclude) {
       return;
     }
 
     await addContact({ name, phone });
+    toast.success('Contact Added!', {
+      position: 'top-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
     onCloseModal();
   };
 

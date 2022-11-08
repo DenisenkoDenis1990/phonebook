@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import AddContactSection from './AddContactSection/AddContactSection';
 import ContactsList from './ContactsList/ContactsList';
 import Filter from './Filter/Filter';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddContactButton from './AddContactButton/AddContactButton';
 import Modal from './Modal/Modal';
 
 const App = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -36,6 +36,7 @@ const App = () => {
           <AddContactSection onCloseModal={closeModal} />
         </Modal>
       )}
+      <ToastContainer />
     </div>
   );
 };
